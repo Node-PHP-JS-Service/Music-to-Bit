@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/Music-to-Bit/sw.js', { scope: '/Music-to-Bit/' })})}
