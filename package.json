@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "fft.js": "^4.0.4",
+    "vite": "^8.3.8"
+  },
+  "devDependencies": {
+    "vite-plugin-pwa": "^2.0.0"
+  }
+}

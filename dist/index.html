@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>音楽Bitへ変換</title>
+      <script type="module" crossorigin src="/assets/index-DiRUJ59y.js"></script>
+      <link rel="stylesheet" crossorigin href="/assets/index-B0nInLq_.css">
+    <link rel="manifest" href="/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script></head>
+    <body>
+        <h1>音楽Bitへ変換</h1>
+        <p>MP3などの音楽ファイルを、micro:bitで再生できるプログラムコードに変換するツールです！</p>
+        <label>
+            圧縮レベル：
+            <select id="quality">
+                <option value="1">高音質</option>
+                <option value="2" selected>標準</option>
+                <option value="3">高圧縮</option>
+                <option value="4">最大圧縮</option>
+            </select>
+        </label><br>
+        <button id="make">作成</button>
+        <h2>作ったスクリプト（javascript）</h2>
+        <p id="size"></p>
+        <button id="copy">コピー</button>
+        <pre id="output"></pre>
+        <h2>圧縮率ランキング</h2>
+        <p>ここでは、これで利用可能（ブラウザに左右されるので利用できないのもある）なファイルの圧縮率ランキングを紹介します!</p>
+        <p>音質を優先するには低順位のものを、圧縮率を優先するには高順位のものを選びましょう!</p>
+        <p>1位はOpusです</p>
+        <p>2位はOgg VorbisとAACです</p>
+        <p>3位はMP3です</p>
+        <p>4位はFLACです</p>
+        <p>5位はWAVです</p>
+    </body>
+</html>
