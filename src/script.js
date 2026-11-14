@@ -4,6 +4,7 @@ const output = document.getElementById("output")
 const copy = document.getElementById("copy")
 const quality = document.getElementById("quality");
 const size = document.getElementById("size");
+const noiseclean = document.getElementById("noiseclean");
 
 async function blobToAudioBuffer(blob) {
     const audioContext = new AudioContext();
@@ -16,7 +17,7 @@ async function blobToAudioBuffer(blob) {
     return audioBuffer;
 }
 
-function analyzeMP3(audioBuffer) {
+function analyzeMP3(audioBuffer, noiseLevel = 2) {
     const data = audioBuffer.getChannelData(0);
 
     const sampleRate = audioBuffer.sampleRate;
@@ -97,6 +98,7 @@ function analyzeMP3(audioBuffer) {
 
                 if (index >= fftSize / 2) break;
 
+
                 score += magnitudes[index] / harmonic;
             }
 
@@ -143,7 +145,7 @@ function analyzeMP3(audioBuffer) {
 }
 
 
-function mergeAudioData(data, quality = 2) {
+function mergeAudioData(data, quality = 2, noiseLevel = 2) {
     // quality: 1 = 高音質、2 = 標準、3 = 高圧縮、4 = 最大圧縮
 
     const settings = {
@@ -158,23 +160,32 @@ function mergeAudioData(data, quality = 2) {
     const result = [];
 
     for (const item of data) {
-        let hz = item.hz > 0
-            ? Math.round(item.hz / config.hz) * config.hz
-            : 0;
-
         let volume = Math.round(
             item.volume / config.volume
         ) * config.volume;
 
         volume = Math.min(255, volume);
 
+        let hz = item.hz > 0
+            ? Math.round(item.hz / config.hz) * config.hz
+            : 0;
+
+        const last = result[result.length - 1];
+
+        // 前の周波数より指定倍率以上高ければ周波数を下げる
+        if (
+            last &&
+            last.hz > 0 &&
+            hz >= last.hz * noiseLevel
+        ) {
+            hz = Math.round(hz / noiseLevel);
+        }
+
         const current = {
             hz,
             volume,
             time: item.time
         };
-
-        const last = result[result.length - 1];
 
         const similarHz = last && (
             // 両方無音なら結合
@@ -250,7 +261,8 @@ make.onclick = () => {
 
             const datacompressed = mergeAudioData(
                 data,
-                Number(quality.value)
+                Number(quality.value),
+                Number(noiseclean.value)
             );
 
             const code = generateMicrobit(datacompressed);
@@ -261,10 +273,10 @@ make.onclick = () => {
                 `コードサイズ: ${new Blob([code]).size.toLocaleString()} bytes`;
 
             if (new Blob([code]).size > 100000) {
-                alert("このサイズだとmakecodeに入らない可能性があります")
+                alert("このサイズだとmakecodeまたはV1に入らない可能性があります")
             }
 
-            make.textContent = "作成"
+            make.textContent = "作成に成功しました!"
         } catch (e) {
             if (e instanceof Error) {
                 alert(`エラーが発生しました。エラー名：${e.name}、エラーメッセージ：${e.message}`)
@@ -281,7 +293,7 @@ copy.onclick = async () => {
     try {
         await navigator.clipboard.writeText(output.textContent);
 
-        copy.textContent = "コピーしました！";
+        copy.textContent = "コピーに成功しました!";
     } catch (error) {
         console.error("コピー失敗:", error);
         copy.textContent = "コピーに失敗しました";

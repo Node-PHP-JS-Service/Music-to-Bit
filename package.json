@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
   "dependencies": {
     "fft.js": "^4.0.4",
     "vite": "^8.3.8"
