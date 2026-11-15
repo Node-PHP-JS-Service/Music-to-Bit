@@ -1,8 +1,9 @@
+
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
-    base: '/Music-to-Bit/',
+    base: "/Music-to-Bit/",
     plugins: [
         VitePWA({
             registerType: "autoUpdate",
@@ -13,15 +14,15 @@ export default defineConfig({
                 theme_color: "#ffffff",
                 background_color: "#ffffff",
                 display: "standalone",
-                start_url: "/",
+                start_url: "/Music-to-Bit/",
                 icons: [
                     {
-                        src: "/icon-192.png",
+                        src: "/Music-to-Bit/icon-192.png",
                         sizes: "192x192",
                         type: "image/png"
                     },
                     {
-                        src: "/icon-512.png",
+                        src: "/Music-to-Bit/icon-512.png",
                         sizes: "512x512",
                         type: "image/png"
                     }
