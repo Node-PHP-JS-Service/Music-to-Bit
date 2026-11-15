@@ -256,6 +256,7 @@ make.onclick = () => {
     make.textContent = "作成中..."
     input.onchange = async () => {
         try {
+            if(!input.files[0]) return;
             const audiobuffer = await blobToAudioBuffer(input.files[0]);
             const data = analyzeMP3(audiobuffer);
 
